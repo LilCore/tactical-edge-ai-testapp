@@ -1,44 +1,43 @@
 'use client';
 
-import {
-  Container,
-  HStack,
-  Heading,
-  Link,
-  Stack,
-  Text,
-} from '@chakra-ui/react';
-import { Checkbox } from '@/components/ui/checkbox';
+import { Container, Heading, Link, Stack, Text } from '@chakra-ui/react';
 import CustomInput from '@/components/custom-input';
 import CustomButton from '@/components/custom-button';
 import { useCallback, useMemo, useState } from 'react';
 import { isValidEmail, isValidPassword } from '@/functions/validations';
 import { ROUTES } from '@/types/routesTypes';
-import { logUserIn } from '@/services/api';
-import { showSuccessToast, showErrorToast } from '@/components/toast';
+import { registerUser } from '@/services/api';
+import { showErrorToast, showSuccessToast } from '@/components/toast';
 import { storeUserData } from '@/functions/localStorage';
 import { useRouter } from 'next/navigation';
 import { CENTER_STYLES } from '@/components/page-spinner';
 
-export default function Login() {
+export default function SignUp() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState('');
+  const [name, setName] = useState('');
   const [password, setPassword] = useState('');
+  const [repeatPassword, setRepeatPassword] = useState('');
 
   const [emailHasError, setEmailHasError] = useState(false);
   const [passwordHasError, setPasswordHasError] = useState(false);
+  const [repeatPasswordHasError, setRepeatPasswordHasError] = useState(false);
 
   const [emailError, setEmailError] = useState('');
 
   const customButtomIsDisabled = useMemo(
-    () => !isValidEmail(email) || !isValidPassword(password),
-    [email, password],
+    () =>
+      !isValidEmail(email) ||
+      !name ||
+      !isValidPassword(password) ||
+      repeatPassword !== password,
+    [email, name, password, repeatPassword],
   );
 
-  const signIn = useCallback(async () => {
+  const signUp = useCallback(async () => {
     setLoading(true);
-    const result = await logUserIn({ email, password });
+    const result = await registerUser({ email, password, name });
     console.log({ result });
     const responseMessage = result.message;
     if (result.success) {
@@ -54,13 +53,13 @@ export default function Login() {
     }
 
     setLoading(false);
-  }, [email, password, router]);
+  }, [email, name, password, router]);
 
   return (
     <Container maxW="300px" style={CENTER_STYLES}>
       <Stack gap="8">
         <Stack gap={{ base: '2', md: '3' }} textAlign="center">
-          <Heading size={{ base: '6xl' }}>Sign in</Heading>
+          <Heading size={{ base: '6xl' }}>Sign up</Heading>
         </Stack>
 
         <Stack>
@@ -85,46 +84,73 @@ export default function Login() {
                 }}
               />
               <CustomInput
+                label="Name"
+                type="text"
+                errorText="Invalid Name"
+                value={name}
+                //   invalid={}
+                onChange={(e) => {
+                  setName(e.target.value);
+                }}
+              />
+              <CustomInput
                 label="Password"
                 type="password"
-                helperText="Password must be at least 6 characters"
                 errorText="Invalid Password"
                 value={password}
                 invalid={passwordHasError}
                 onChange={(e) => {
                   setPasswordHasError(false);
+                  setRepeatPasswordHasError(false);
                   setPassword(e.target.value);
                 }}
                 onBlur={(e) => {
-                  if (e.target.value)
+                  if (e.target.value) {
                     setPasswordHasError(!isValidPassword(e.target.value));
+                    if (repeatPassword)
+                      setRepeatPasswordHasError(
+                        e.target.value !== repeatPassword,
+                      );
+                  }
+                }}
+              />
+              <CustomInput
+                label="Repeat password"
+                type="password"
+                helperText="Password must be at least 6 characters"
+                errorText="Repeat password is not equal"
+                value={repeatPassword}
+                invalid={repeatPasswordHasError}
+                onChange={(e) => {
+                  setRepeatPasswordHasError(false);
+                  setPasswordHasError(false);
+                  setRepeatPassword(e.target.value);
+                }}
+                onBlur={(e) => {
+                  if (e.target.value) {
+                    setRepeatPasswordHasError(e.target.value !== password);
+                  }
                 }}
               />
             </Stack>
-            <HStack justify="space-between">
-              {/* <Checkbox defaultChecked>Remember me</Checkbox> */}
-              {/* <Link variant="plain" fontSize="sm" href={ROUTES.FORGOT_PASSWORD}>
-              Forgot password
-            </Link> */}
-            </HStack>
             <Stack gap="4">
               <CustomButton
-                label="Login"
+                label="Sign Up"
                 disabled={customButtomIsDisabled}
                 loading={loading}
-                onClick={signIn}
+                onClick={signUp}
               />
             </Stack>
           </Stack>
 
           <Text textStyle="sm" color="fg.muted" textAlign="center">
-            Doesn&apos;t have an account?{' '}
+            Have an account already?{' '}
             <Link
               variant="underline"
-              href={ROUTES.SIGNUP}
+              href={ROUTES.LOGIN}
               _hover={{ color: 'primary' }}
             >
-              Sign up
+              Log in
             </Link>
           </Text>
         </Stack>
