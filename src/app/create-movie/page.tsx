@@ -6,7 +6,7 @@ import { ROUTES } from '@/types/routesTypes';
 import { useRouter } from 'next/navigation';
 import { storeFile } from '@/functions/functions';
 import useStore from '@/config/zustantStore';
-import { showErrorToast } from '@/components/toast';
+import { showErrorToast, showSuccessToast } from '@/components/toast';
 import { createMovie } from '@/services/api';
 import UpdateMovie from '@/components/update-movies';
 
@@ -57,6 +57,7 @@ export default function CreateMovie() {
         // console.log(movieImageResponse);
 
         if (movieImageResponse?.success) {
+          showSuccessToast(movieImageResponse.message);
           const poster = movieImageResponse.data;
 
           const result = await createMovie({

@@ -6,7 +6,7 @@ import { ROUTES } from '@/types/routesTypes';
 import { useParams, useRouter } from 'next/navigation';
 import { storeFile } from '@/functions/functions';
 import useStore from '@/config/zustantStore';
-import { showErrorToast } from '@/components/toast';
+import { showErrorToast, showSuccessToast } from '@/components/toast';
 import { createMovie, getMovie, updateMovie } from '@/services/api';
 import UpdateMovie from '@/components/update-movies';
 import { Movie } from '@/types/moviesTypes';
@@ -93,6 +93,7 @@ export default function UpdateMoviePage() {
         });
 
         if (result.success) {
+          showSuccessToast(result.message);
           redirectToMovies();
         } else throw new Error(result.message);
       } catch (error) {
