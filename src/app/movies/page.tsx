@@ -7,6 +7,7 @@ import {
   GridItem,
   Heading,
   HStack,
+  Link,
   Stack,
 } from '@chakra-ui/react';
 import { useEffect, useMemo, useState } from 'react';
@@ -17,7 +18,6 @@ import { ROUTES } from '@/types/routesTypes';
 import { useRouter } from 'next/navigation';
 import Pagination from '@/components/pagination';
 import { LuCirclePlus } from 'react-icons/lu';
-import Link from 'next/link';
 import useStore from '@/config/zustantStore';
 import { getUserMovies } from '@/services/api';
 import PageSpinner, { CENTER_STYLES } from '@/components/page-spinner';
@@ -44,9 +44,7 @@ export default function Movies() {
         if (response.success) {
           setMoviesRetrieved(true);
           const movs = response.data;
-          //   setMovies(movs);
-          // To test the pagination
-          setMovies(Array(67).fill(movs).flat());
+          setMovies(movs);
         }
       });
     }
@@ -58,13 +56,40 @@ export default function Movies() {
         <PageSpinner />
       ) : movies.length ? (
         <Stack gap={16}>
-          <HStack alignItems="center">
-            <Heading fontSize={48} fontWeight={600} mb={2}>
-              My Movies
-            </Heading>
+          <HStack alignItems="center" w="full" justifyContent="space-between">
+            <HStack>
+              <Heading fontSize={48} fontWeight={600} mb={2}>
+                My Moviess
+              </Heading>
 
-            <Link href={ROUTES.CREATE_MOVIE}>
-              <LuCirclePlus size={26} fontWeight={700} />
+              <Link href={ROUTES.CREATE_MOVIE}>
+                <LuCirclePlus size={26} fontWeight={700} />
+              </Link>
+            </HStack>
+
+            <Link
+              variant="underline"
+              href="#"
+              color="primary"
+              onClick={(e) => {
+                e.preventDefault();
+
+                const randomMovies: Movie[] = Array.from(
+                  { length: 63 },
+                  (_, index) => ({
+                    _id: `random-movie-${index}`,
+                    title: `Random Movie ${index + 1}`,
+                    publishingYear: Math.floor(Math.random() * 21) + 2000, // Random year between 2000 and 2020
+                    userId: '',
+                    poster:
+                      'https://pablobedrossian.com/wp-content/uploads/2023/07/el-padrino-ii-03.jpeg',
+                  }),
+                );
+
+                setMovies([...movies, ...randomMovies]);
+              }}
+            >
+              Test Pagination
             </Link>
           </HStack>
 
@@ -81,9 +106,10 @@ export default function Movies() {
             {visibleMovies.map((movie) => (
               <GridItem
                 key={movie.title}
-                onClick={() =>
-                  router.push(`${ROUTES.UPDATE_MOVIE}/${movie._id}`)
-                }
+                onClick={() => {
+                  if (!movie._id.includes('random'))
+                    router.push(`${ROUTES.UPDATE_MOVIE}/${movie._id}`);
+                }}
               >
                 <MovieCard movie={movie} />
               </GridItem>
