@@ -40,13 +40,15 @@ export default function Movies() {
 
   useEffect(() => {
     if (!moviesRetrieved && user) {
-      getUserMovies({ userId: user._id }).then((response) => {
-        if (response.success) {
+      getUserMovies({ userId: user._id })
+        .then((response) => {
+          if (response.success) {
+            const movs = response.data;
+            setMovies(movs);
+          }
           setMoviesRetrieved(true);
-          const movs = response.data;
-          setMovies(movs);
-        }
-      });
+        })
+        .catch(() => setMoviesRetrieved(true));
     }
   }, [moviesRetrieved, user]);
 
