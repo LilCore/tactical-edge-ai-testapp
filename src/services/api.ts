@@ -1,4 +1,5 @@
 import Axios from 'axios';
+import Cookies from 'js-cookie';
 
 interface CustomResponse {
   success: boolean;
@@ -10,7 +11,8 @@ const axios = Axios.create({
   headers: {
     // 'Content-Type': 'application/json',
     // 'X-Api-Key': process.env.REACT_APP_X_API_KEY ?? '',
-    Authorization: `Bearer ${localStorage.getItem('accesstoken')}`,
+    // Authorization: `Bearer ${localStorage?.getItem('accesstoken') ?? 'notoken'}` ,
+    Authorization: `Bearer ${Cookies.get('accesstoken')} ?? notoken`,
   },
 });
 
