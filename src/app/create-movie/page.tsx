@@ -57,7 +57,6 @@ export default function CreateMovie() {
         // console.log(movieImageResponse);
 
         if (movieImageResponse?.success) {
-          showSuccessToast(movieImageResponse.message);
           const poster = movieImageResponse.data;
 
           const result = await createMovie({
@@ -68,6 +67,7 @@ export default function CreateMovie() {
           });
 
           if (result.success) {
+            showSuccessToast(result.message);
             redirectToMovies();
           } else throw new Error(result.message);
         } else {
