@@ -12,7 +12,6 @@ const ClientSideEffect = () => {
 
   useEffect(() => {
     const user = getItemFromLocalStorage(LOCALSTORAGE_OBJECTS_NAMES.USER);
-    console.log('GETTING USER FROM LOCALSTORAGE', user);
     if (user) setUser(user);
   }, [setUser]);
 

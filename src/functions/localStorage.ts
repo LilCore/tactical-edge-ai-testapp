@@ -26,6 +26,7 @@ export const removeItemFromLocalStorage = (
 };
 
 export const storeUserData = (token: string, user: User) => {
+  console.log('SETTING USER TO LOCALSTORAGE', user);
   setItemToLocalStorage(LOCALSTORAGE_OBJECTS_NAMES.USER, user);
   setItemToLocalStorage(LOCALSTORAGE_OBJECTS_NAMES.ACCESS_TOKEN, token);
   document.cookie = `${LOCALSTORAGE_OBJECTS_NAMES.ACCESS_TOKEN}=${token}; path=/;`;

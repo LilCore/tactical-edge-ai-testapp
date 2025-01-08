@@ -19,9 +19,11 @@ import { showSuccessToast, showErrorToast } from '@/components/toast';
 import { storeUserData } from '@/functions/localStorage';
 import { useRouter } from 'next/navigation';
 import { CENTER_STYLES } from '@/components/page-spinner';
+import useStore from '@/config/zustantStore';
 
 export default function Login() {
   const router = useRouter();
+  const setUser = useStore((state) => state.setUser);
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -46,6 +48,7 @@ export default function Login() {
       const token = result.data?.token;
       const user = result.data?.user;
       storeUserData(token, user);
+      setUser(user);
       router.push(ROUTES.MOVIES);
     } else {
       showErrorToast(responseMessage);
@@ -54,7 +57,7 @@ export default function Login() {
     }
 
     setLoading(false);
-  }, [email, password, router]);
+  }, [email, password, router, setUser]);
 
   return (
     <Container maxW="300px" style={CENTER_STYLES}>
