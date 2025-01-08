@@ -1,8 +1,9 @@
-import { Stack, HStack, useMediaQuery, Box } from '@chakra-ui/react';
+import { Stack, HStack } from '@chakra-ui/react';
 import CustomButton from './custom-button';
 import CustomInput from './custom-input';
 import DropZone from './drop-zone';
 import { Field } from './ui/field';
+import useMediaQuery from '@/hooks/useMediaQuery';
 
 interface UpdateMovieProps {
   canUpdate: boolean;
@@ -106,7 +107,10 @@ const UpdateMovie = ({
   imageFile,
   label = 'Submit',
 }: UpdateMovieProps) => {
-  const [isMobile] = useMediaQuery(['(max-width: 768px)'], { ssr: false });
+  //   const [isMobile] = useMediaQuery(['(max-width: 768px)'], { ssr: false });
+  //   const isMobile = true;
+
+  const isMobile = useMediaQuery('(max-width: 768px)');
 
   return (
     <>
