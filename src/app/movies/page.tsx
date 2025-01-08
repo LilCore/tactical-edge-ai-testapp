@@ -56,9 +56,14 @@ export default function Movies() {
         <PageSpinner />
       ) : movies.length ? (
         <Stack gap={16}>
-          <HStack alignItems="center" w="full" justifyContent="space-between">
+          <HStack
+            alignItems="center"
+            w="full"
+            justifyContent="space-between"
+            display={{ base: 'block', md: 'flex' }}
+          >
             <HStack>
-              <Heading fontSize={48} fontWeight={600} mb={2}>
+              <Heading fontSize={48} fontWeight={600} mb={2} lineHeight={1.2}>
                 My Moviess
               </Heading>
 
