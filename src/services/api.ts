@@ -12,7 +12,7 @@ const axios = Axios.create({
     // 'Content-Type': 'application/json',
     // 'X-Api-Key': process.env.REACT_APP_X_API_KEY ?? '',
     // Authorization: `Bearer ${localStorage?.getItem('accesstoken') ?? 'notoken'}` ,
-    Authorization: `Bearer ${Cookies.get('accesstoken') ?? 'notoken'} `,
+    // Authorization: `Bearer ${Cookies.get('accesstoken') ?? 'notoken'} `,
   },
 });
 
@@ -66,6 +66,11 @@ export const sendDataToS3 = async (body: {
     const { data: responseData } = await axios.post(
       `${process.env.NEXT_PUBLIC_API_URL}/sendDataToS3`,
       body,
+      {
+        headers: {
+          Authorization: `Bearer ${Cookies.get('accesstoken') ?? 'notoken'} `,
+        },
+      },
     );
     return getResponse(responseData);
   } catch (error: any) {
@@ -86,6 +91,11 @@ export const createMovie = async (body: {
     const { data: responseData } = await axios.post(
       `${process.env.NEXT_PUBLIC_API_URL}/createMovie`,
       body,
+      {
+        headers: {
+          Authorization: `Bearer ${Cookies.get('accesstoken') ?? 'notoken'} `,
+        },
+      },
     );
     return getResponse(responseData);
   } catch (error: any) {
@@ -107,6 +117,11 @@ export const updateMovie = async (body: {
     const { data: responseData } = await axios.post(
       `${process.env.NEXT_PUBLIC_API_URL}/updateMovie`,
       body,
+      {
+        headers: {
+          Authorization: `Bearer ${Cookies.get('accesstoken') ?? 'notoken'} `,
+        },
+      },
     );
     return getResponse(responseData);
   } catch (error: any) {
@@ -124,6 +139,11 @@ export const getMovie = async (body: {
     const { data: responseData } = await axios.post(
       `${process.env.NEXT_PUBLIC_API_URL}/getMovie`,
       body,
+      {
+        headers: {
+          Authorization: `Bearer ${Cookies.get('accesstoken') ?? 'notoken'} `,
+        },
+      },
     );
     return getResponse(responseData);
   } catch (error: any) {
@@ -141,6 +161,11 @@ export const getUserMovies = async (body: {
     const { data: responseData } = await axios.post(
       `${process.env.NEXT_PUBLIC_API_URL}/getAllUserMovies`,
       body,
+      {
+        headers: {
+          Authorization: `Bearer ${Cookies.get('accesstoken') ?? 'notoken'} `,
+        },
+      },
     );
     return getResponse(responseData);
   } catch (error: any) {
