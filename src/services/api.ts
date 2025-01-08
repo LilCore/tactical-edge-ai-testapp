@@ -10,6 +10,7 @@ const axios = Axios.create({
   headers: {
     // 'Content-Type': 'application/json',
     // 'X-Api-Key': process.env.REACT_APP_X_API_KEY ?? '',
+    Authorization: `Bearer ${localStorage.getItem('accesstoken')}`,
   },
 });
 

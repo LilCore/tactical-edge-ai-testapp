@@ -39,7 +39,7 @@ export default function Login() {
   const signIn = useCallback(async () => {
     setLoading(true);
     const result = await logUserIn({ email, password });
-    console.log({ result });
+    // console.log({ result });
     const responseMessage = result.message;
     if (result.success) {
       showSuccessToast(responseMessage);
